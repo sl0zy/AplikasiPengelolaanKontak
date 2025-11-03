@@ -28,6 +28,10 @@ public class PengelolaanKontakFrame extends javax.swing.JFrame {
         model = new DefaultTableModel(new String[] {"No", "Nama", "Nomor Telepon", "Kategori"}, 0);
         tblKontak.setModel(model);
         loadContacts();
+        
+        // Batasi txtNomorTelepon hanya untuk angka
+        ((javax.swing.text.AbstractDocument) txtNomorTelepon.getDocument()).setDocumentFilter(new NumericDocumentFilter());
+        
     }
     
     private void loadContacts() {
@@ -371,6 +375,12 @@ public class PengelolaanKontakFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Nomor Telepon:");
 
+        txtNomorTelepon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNomorTeleponActionPerformed(evt);
+            }
+        });
+
         jLabel4.setText("Kategori:");
 
         cmbKategori.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Keluarga", "Teman", "Kantor" }));
@@ -582,6 +592,10 @@ public class PengelolaanKontakFrame extends javax.swing.JFrame {
         importFromCSV();
     }//GEN-LAST:event_btnImportActionPerformed
 
+    private void txtNomorTeleponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNomorTeleponActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNomorTeleponActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -638,4 +652,29 @@ public class PengelolaanKontakFrame extends javax.swing.JFrame {
     private javax.swing.JTextField txtNomorTelepon;
     private javax.swing.JTextField txtPencarian;
     // End of variables declaration//GEN-END:variables
+    
+    // Inner class untuk membatasi input hanya angka di txtNomorTelepon
+    private static class NumericDocumentFilter extends javax.swing.text.DocumentFilter {
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, javax.swing.text.AttributeSet attr)
+                throws javax.swing.text.BadLocationException {
+            if (string == null) return;
+            if (string.isEmpty() || string.matches("\\d+")) {
+                super.insertString(fb, offset, string, attr);
+            } else {
+                java.awt.Toolkit.getDefaultToolkit().beep();
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, javax.swing.text.AttributeSet attrs)
+                throws javax.swing.text.BadLocationException {
+            if (text == null) return;
+            if (text.isEmpty() || text.matches("\\d+")) {
+                super.replace(fb, offset, length, text, attrs);
+            } else {
+                java.awt.Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }
 }
